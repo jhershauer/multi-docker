@@ -16,7 +16,7 @@ after_success:
   #log into docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   #push images to docker hub
-  - docker push -t jhershauer/multi-client
-  - docker push -t jhershauer/multi-nginx
-  - docker push -t jhershauer/multi-server
-  - docker push -t jhershauer/multi-worker
+  - docker push jhershauer/multi-client
+  - docker push jhershauer/multi-nginx
+  - docker push jhershauer/multi-server
+  - docker push jhershauer/multi-worker
