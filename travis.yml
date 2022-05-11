@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t jhershauer/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true jhershauer/react-test npm test
+
+after_success:
+  - docker build -t jhershauer/multi-client ./client
+  - docker build -t jhershauer/multi-nginx ./nginx
+  - docker build -t jhershauer/multi-server ./server
+  - docker build -t jhershauer/multi-worker ./worker
+  #log into docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #push images to docker hub
+  - docker push -t jhershauer/multi-client
+  - docker push -t jhershauer/multi-nginx
+  - docker push -t jhershauer/multi-server
+  - docker push -t jhershauer/multi-worker
